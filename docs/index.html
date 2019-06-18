@@ -1,0 +1,1114 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <title>React Basics</title>
+  
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/theme/black.css">
+  
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="lib/css/zenburn.css">
+  
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+    
+    var globalSubject = '';
+  </script>
+  
+  <style type="text/css">
+    #subject {
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      color: #8c8c8c;
+      text-transform: lowercase;
+      font-size: 32px;
+    }
+    iframe {
+      background-color: white;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      
+      <div id="subject"></div>
+      
+      <section id="intro" data-subject="">
+        <h1>React JS</h1>
+        <p class="fragment">BASICS</p>
+      </section>
+      
+      <section id="agenda" data-subject="">
+        <h1>Agenda</h1>
+        <ul>
+          <li>Prerequisites</li>
+          <li>React</li>
+          <li>Redux</li>
+          <li>Routes</li>
+          <li>Networking</li>
+          <li>Hands On</li>
+        </ul>
+      </section>
+      
+      <section id="prerequisites" data-subject="">
+        <h1>Prerequisites</h1>
+        <ul>
+          <li>Javascript</li>
+          <li>ES6</li>
+          <li>JSX</li>
+        </ul>
+      </section>
+      
+      <section data-subject="prerequisites">
+        <h2>Javascript</h2>
+        <p class="fragment">duh...</p>
+      </section>
+      
+      <section data-subject="prerequisites">
+        <section>
+          <h2>ES6</h2>
+          <p>ECMAScript 6 or ECMAScript 2015</p>
+          <p>Brought a lot of useful features that are widely used while working with React</p>
+          <p>Let's take a look at some of the most used</p>
+        </section>
+        <section>
+          <h2>Variables</h2>
+          <p>
+            <pre><code data-trim data-noescape>
+              const a = 10;
+              a = 11; // error
+            </code></pre>
+            
+          </p>
+          <small>Immutable itself, not its assigned content. Objects properties, for example.</small>
+          <p>
+            <pre><code data-trim data-noescape>
+              let a = 10;
+              a = 11; // console.log(a) prints 11
+            </code></pre>
+          </p>
+          <small>Mutable. Simple.</small>
+        </section>
+        <section>
+          <h2>Arrow Functions</h2>
+          <p>
+            <pre><code data-trim data-noescape>
+              const sum = (a, b) => a + b;
+              sum(2, 3); // 5
+            </code></pre>
+          </p>
+          <small>It's the same as</small>
+          <p>
+            <pre><code data-trim data-noescape>
+              function sum (a, b) {
+                return a + b;
+              }
+              sum(2, 3) // 5
+            </code></pre>
+          </p>
+        </section>
+        <section>
+          <h2>String Interpolation</h2>
+          <p>
+            <pre><code data-trim data-noescape>
+              const user = { name: 'Jack', age: 40 };
+              const str = `Hi, my name is {user.name}`; 
+              console.log(str); // Hi, my name is Jack.
+            </code></pre>
+          </p>
+        </section>
+        <section>
+          <h2>Desconstruction</h2>
+          <p>
+            <pre><code data-trim data-noescape>
+              const user = { name: 'Jack', age: 40 };
+              const { name, age } = user;
+              console.log(name, age) // Jack 40
+            </code></pre>
+          </p>
+        </section>
+        <section>
+          <h2>Modules</h2>
+          <p>
+            <pre><code data-trim data-noescape>
+              // lib/math.js
+              export const Sum = (a, b) => a + b;
+              export default (a) => a * a;
+              
+              // app.js
+              import Power, { Sum } from './lib/math'
+            </code></pre>
+          </p>
+        </section>
+        <section>
+          <h2>Classes</h2>
+          <p>
+            <pre><code data-trim data-noescape>
+              class Shape {
+                constructor (id) {
+                  this.id = x;
+                }
+              }
+              
+              class Square extends Shape {
+                constructor (id) {
+                  super(id);
+                  this.type = 'square';
+                }
+              }
+            </code></pre>
+          </p>
+        </section>
+        <section>
+          <h2>A few more</h2>
+          <ul>
+            <li>Default parameter value: <pre><code>sum(a = 1, b = 2) => ...</code></pre></li>
+            <li>Property shorthand: <pre><code data-trim data-noescape>
+              const x = 0, y = 0;
+              const obj = { x, y } // { x: 0, y: 0 }
+            </code></pre></li>
+          </ul>
+        </section>
+        
+      </section>
+      <section data-subject="prerequisites">
+        <section>
+          <h1>JSX</h1>
+          <p>Consider this variable:</p>
+          <pre><code data-trim data-noescape>const element = &lt;div&gt;Hello!&lt;/div&gt;;</code></pre>
+          <p>It's neither a string nor HTML. This is called JSX, and it is a syntax extension to JavaScript. 
+            It produces React elements that will be rendered in the DOM.</p>
+          </section>
+          <section>
+            <h2>Why JSX?</h2>
+            <p>React separates concerns, instead of technologies. As the UI aspect of a React element only concerns itself, we will use
+              JSX to define how the element should be displayed in the browser. </p>
+              <p>Whithout JSX the previous example would look like this:</p>
+              <pre><code data-trim data-noescape>const element = React.createElement("div", null, "Hello!");</code></pre>
+              
+            </section>
+          </section>
+          <section>
+            <h1>React</h1>
+            <p class="fragment">JS Library</p>
+            <p class="fragment">Maintained by Facebook</p>
+            <p class="fragment">Declarative</p>
+            <p class="fragment">Component Based</p>
+            <p class="fragment">Fast</p>
+            
+            <aside class="notes">
+              <ul>
+                <li>Some say React comes from reactive, as in reactive programming.</li>
+                <li>Simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.</li>
+                <li>Declarative programming is a programming paradigm that expresses the logic of a computation without describing its control flow.</li>
+                <li>Imperative programming is a programming paradigm that uses statements that change a program’s state.</li>
+              </ul>
+            </aside>
+          </section>
+          <section data-subject="react">
+            <section>
+              <h2>Components</h2>
+              <p>Components let you split the UI into independent, reusable pieces, and think about each piece in isolation.</p>
+              <p>Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.</p>
+              <p>Remember the <b class="fragment highlight-red">props</b>!</p>
+            </section>
+            <section>
+              <h2>Types</h2>
+              <p>Functional</p>
+              <pre><code data-trim data-noescape>
+                function Welcome(props) {
+                  return &lt;h1&gt;Hello, {props.name}&lt;/h1&gt;;
+                }
+              </code></pre>
+              <p>Class</p>
+              <pre><code data-trim data-noescape>
+                class Welcome extends React.Component {
+                  render() {
+                    return &lt;h1&gt;Hello, {this.props.name}&lt;/h1&gt;;
+                  }
+                }
+              </code></pre>
+            </section>
+            <section style="height: 450px;">
+              <iframe data-src="http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/"></iframe>
+            </section>
+            <section>
+              <ul>
+                <li>Other APIs
+                  <ul>
+                    <li>setState()</li>
+                    <li>forceUpdate</li>
+                  </ul>
+                </li>
+                <li>Class Properties
+                  <ul>
+                    <li>defaultProps</li>
+                    <li>displayName</li>
+                  </ul>
+                </li>
+                <li>Instance Properties
+                  <ul>
+                    <li>props</li>
+                    <li>state</li>
+                  </ul>
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3>State</h3>
+              <p>An object that represents the component's state.</p>
+            </section>
+            <section>
+              <h3>Constructor</h3>
+              <pre><code data-trim data-noescape>
+                class User extends React.Component {
+                  constructor(props) {
+                    super(props);
+                    
+                    this.state = {
+                      name: "Pedro Dias"
+                    }
+                  }
+                  ...
+                }
+              </code></pre>
+              <aside class="notes">If you don’t initialize state and you don’t bind methods, you don’t need to implement a constructor for your React component.
+                When implementing the constructor for a React.Component subclass, you should call <b>super(props)</b> before any other statement. Otherwise, this.props will be undefined in the constructor, which can lead to bugs.
+              </aside>
+            </section>
+            <section>
+              <h3 style="text-transform: none;">setState()</h3>
+              <pre><code data-trim data-noescape>
+                constructor(props) { ... }
+                
+                // Wrong
+                this.state.comment = 'Hello';
+                
+                //Correct
+                this.setState({comment: 'Hello'});
+              </code></pre>
+              
+              <ul>
+                <li>State updates may be asynchronous</li>
+                <li>State updates are merged</li>
+                <li>The data flows down</li>
+              </ul>
+              <aside class="notes">If you don’t initialize state and you don’t bind methods, you don’t need to implement a constructor for your React component.
+                When implementing the constructor for a React.Component subclass, you should call <b>super(props)</b> before any other statement. Otherwise, this.props will be undefined in the constructor, which can lead to bugs.
+              </aside>
+            </section>
+          </section>
+          <section data-subject="let's code">
+            <section data-subject=" ">
+              <h2>Let's code!</h2>
+            </section>
+            <section>
+              <p>We will use NodeJS 8.6+ version.</p>
+              <p>Facebook has provided a tool to create a very simple React project in seconds. Tha simple project will be our start point. For that, run the following commands:</p>
+              <pre><code data-trim data-noescape>
+                $ npx create-react-app my_app_folder
+                $ cd my_app_folder
+                $ npm install
+                $ npm start
+              </code></pre>
+            </section>
+            <section>
+              <p>At this point, you should have a browser window opened with you project running.</p>
+              <p>it is ready to start implementing whatever you want.</p>
+            </section>
+            <section>
+              <pre><code data-trim data-noescape>
+                // components/hello/hello.js
+                import React from 'react';
+                
+                const Hello = ({ name = 'John Doe' }) => (
+                &lt;div className='cmp_hello'&gt;
+                &lt;p&gt;Hello, {name}!&lt;/p&gt;
+                &lt;/div&gt;
+                );							
+                export default Hello;
+              </code></pre>
+              <pre><code data-trim data-noescape>
+                // App.js
+                ...
+                import Hello from './components/hello/hello';
+                ...
+                &lt;/header&gt;
+                &lt;Hello /&gt;
+              </code></pre>
+              <p>What's being displayed? Why?</p>
+            </section>
+            <section>
+              <p>Let's change the displyed name inside our component by sending a prop to it.</p>
+              <pre class="fragment"><code data-trim data-noescape>
+                // App.js
+                &lt;/header&gt;
+                &lt;Hello name="Pedro Dias" /&gt;
+              </code></pre>
+              <div class="fragment">
+                <p>How can we make the name dinamically changed by the user?</p>
+                <small>Rememeber: props are immutable.</small>
+              </div>
+            </section>
+            <section>
+              <p>Let's define a state on our component App.js</p>
+              <pre class="fragment"><code data-trim data-noescape>
+                // App.js
+                constructor(props) {
+                  super(props);
+                  
+                  this.state = { 
+                    name: 'Pedro Dias'
+                  };
+                }
+              </code></pre>
+            </section>
+            <section>
+              <p>Let's place an input text and a button</p>
+              <pre><code data-trim data-noescape>
+                // App.js
+                &lt;input type=&quot;text&quot; placeholder=&quot;Type your name&quot; 
+                onChange={this.handleChange} value={this.state.tempName} /&gt; 
+                &lt;button onClick={this.handleClick}&gt;
+                Update Name
+                &lt;/button&gt;
+              </code></pre>
+              <p class="fragment">What are those between brackets?</p>
+              <aside class="notes">
+                <ul>
+                  <li>this.handleChange: a function we will use here a define later</li>
+                  <li>this.state.tempName: did we define? is it allowed? remember: states are merged by setUpdate</li>
+                  <li>this.handleClick: another handle</li>
+                </ul>
+              </aside>
+            </section>
+            <section>
+              <p>Let's define the click handler:</p>
+              <pre><code data-trim data-noescape>
+                handleClick(e) {
+                  this.setState((prevState, props) => ({
+                    name: prevState.tempName,
+                    tempName: ''
+                  }));
+                }
+              </code></pre>
+            </section>
+            <section>
+              <p>Now the change handler:</p>
+              <pre><code data-trim data-noescape>
+                handleChange(e) {
+                  this.setState({
+                    tempName: e.target.value
+                  });
+                }
+              </code></pre>
+            </section>
+            
+            <section>
+              <p>Did it work?</p>
+              <p class="fragment">Can you tell why?</p>
+              <aside class="notes">
+                React renders every time the application state changes. It verifies which component was modified and update only what's needed.
+              </aside>
+            </section>
+            
+            <section>
+              <pre><code data-trim data-noescape>
+                // inside constructor
+                this.handleClick = this.handleClick.bind(this);
+                
+                //another way
+                handleChange = (e) => {
+                  this.setState({
+                    tempName: e.target.value
+                  });
+                }
+              </code></pre>
+            </section>
+            
+            <section>
+              <p>
+                Now we have a very simple React application with the basics concepts applied.
+              </p>
+              <h3>Questions?</h3>
+            </section>
+          </section>
+          <section data-subject=" ">
+            <h1>Redux</h1>
+          </section>
+          <section data-subject="redux">
+            <section>
+              <p>Before going into Redux, I must talk about <b style="color: red;">Flux</b>.</p>
+            </section>
+            <section>
+              <p>Flux is an architecture used for managing data flow in your application. The most important concept is that data flows in one direction.</p>
+              <table>
+                <tr>
+                  <td>MVC</td>
+                  <td>Flux</td>
+                </tr>
+                <tr>
+                  <td><img data-src="https://res.infoq.com/news/2014/05/facebook-mvc-flux/en/resources/flux-react-mvc.png" /></td>
+                  <td><img data-src="data:image/png;base64,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"/></td>
+                </tr>
+              </table>
+              
+            </section>
+            <section>
+              <p>Flux's pieces:</p>
+              <ul>
+                <li>Dispatcher</li>
+                <li>Store</li>
+                <li>Action</li>
+                <li>View</li>
+              </ul>
+              <aside class="notes">
+                <ul>
+                  <li>Dispatcher: The dispatcher receives actions and dispatches them to stores that have registered with the dispatcher. Every store will receive every action. There should be only one singleton dispatcher in each application.</li>
+                  <li>Store: A store is what holds the data of an application. Stores will register with the application's dispatcher so that they can receive actions. The data in a store must only be mutated by responding to an action. There should not be any public setters on a store, only getters. Stores decide what actions they want to respond to. Every time a store's data changes it must emit a "change" event. There should be many stores in each application.</li>
+                  <li>Action: Actions define the internal API of your application. They capture the ways in which anything might interact with your application. They are simple objects that have a "type" field and some data.</li>
+                  <li>View: Data from stores is displayed in views. REACT COMPONENTS!</li>
+                </ul>
+              </aside>
+            </section>
+            <section>
+              <p>Redux is just an implementation of Flux architecture.</p>
+            </section>
+          </section>
+          <section data-subject="redux">
+            <h2>Concepts</h2>
+            <ul>
+              <li>To change something in the state, you need to dispatch an ACTION, a plain JavaScript object that describes what happened.</li>
+              <li>To tie state and actions together, we write a function called a REDUCER, a function that takes state and action as arguments and returns the next state of the app.</li>
+              <li>The main idea is that you describe how your state is updated over time in response to action objects</li>
+            </ul>
+          </section>
+          <section data-subject="let's code">
+            <section data-subject=" ">
+              <h2>Let's code!</h2>
+            </section>
+            <section>
+              <h3>Action</h3>
+              <pre><code data-trim data-noescape>
+                // redux/actions/user-action.js
+                export const setName = name => ({
+                  type: 'SET_NAME',
+                  params: name
+                });
+              </code></pre>
+            </section>
+            <section>
+              <h3>Reducer</h3>
+              <pre><code data-trim data-noescape>
+                // redux/reducers/UserReducer.js
+                const INITIAL_STATE = { name:'Pedro Dias' };
+                
+                export default (state = INITIAL_STATE, action) => {
+                  const { type, params } = action;
+                  switch (type) {
+                    case 'SET_NAME':
+                    return { name: params };
+                    default:
+                    return state;
+                  }
+                };
+              </code></pre>
+            </section>
+            <section>
+              <h3>Recucer Combinator</h3>
+              
+              <pre><code data-trim data-noescape>
+                // redux/reducers/index.js
+                import UserReducer from './UserReducer';
+                
+                export default {
+                  user: UserReducer
+                };
+              </code></pre>
+            </section>
+            <section>
+              <h3>Store</h3>
+              
+              <pre><code data-trim data-noescape>
+                import { combineReducers, createStore } from 'redux';
+                import reducers from './reducers';
+                
+                const reducer = combineReducers(reducers);
+                const store = createStore(reducer);
+                
+                export default store;
+              </code></pre>
+            </section>
+            <section>
+              <h3>Provider</h3>
+              
+              <pre><code data-trim data-noescape>
+                // index.js
+                ...
+                import { Provider } from 'react-redux';
+                import store from './redux/store';
+                ...
+                ReactDOM.render(
+                &lt;Provider store={store}&gt;
+                &lt;App /&gt;
+                &lt;/Provider&gt;
+                , document.getElementById('root'));
+                
+              </code></pre>
+            </section>
+            <section>
+              <h3>Connect App.js to Redux</h3>
+              <pre><code data-trim data-noescape>
+                //App.js
+                import { connect } from 'react-redux';
+                import { setName } from './redux/actions/user-action';
+                
+                // replace 'export default App' by:
+                const mapStateToProps = state => ({
+                  user: state.user
+                });
+                const mapDispatchToProps = dispatch => ({
+                  setName: name => dispatch(setName(name))
+                });
+                
+                export default connect(mapStateToProps, 
+                mapDispatchToProps)(App);
+              </code></pre>
+              <aside class="notes">
+                <ul>
+                  <li>mapStateToProps: tells how to transform the current Redux store state into the props/li>
+                    <li>mapDispatchToProps: maps the encapsulated actions to component props</li>
+                    <li>connect: Connects a React component to a Redux store. It does not modify the component class passed to it; instead, it returns a new, connected component class for you to use.</li>
+                  </ul>
+                </aside>
+              </section>
+              <section>
+                <pre><code data-trim data-noescape>
+                  // App.js
+                  
+                  handleClick(e) {
+                    const { name } = this.state;
+                    const { setName } = this.props;
+                    
+                    setName(name);
+                  }
+                  handleChange = (e) => {
+                    this.setState({
+                      name: e.target.value
+                    });
+                  }
+                </code></pre>
+              </section>
+              <section>
+                <pre><code data-trim data-noescape>
+                  // App.js
+                  
+                  render() {
+                    const { name } = this.state;
+                    const { user } = this.props;
+                    ...
+                    &lt;Hello name={user.name} /&gt;
+                    ...
+                  }
+                </code></pre>
+              </section>
+              <section>
+                <p>Did it work?</p>
+                <p class="fragment">Can you tell why?</p>
+                <aside class="notes">
+                  Components connected to store state are re-rendered whenever the state changes
+                </aside>
+              </section>
+              <section>
+                <p>Can you create a twin Hello component which is connected to the store state instead of receiving the name as prop from parent component?</p>
+              </section>
+              <section>
+                <pre><code data-trim data-noescape>
+                  //components/HelloConnected.js
+                  import React from 'react';
+                  import { connect } from 'react-redux';
+                  const HelloConnected = (props) => {
+                    const { user: { name } } = props
+                    return (
+                    &lt;div className='cmp_hello'&gt;
+                    &lt;p&gt;Hello, {name}!&lt;/p&gt;
+                    &lt;/div&gt;
+                    );
+                  }
+                  
+                  const mapStateToProps = state => ({ user: state.user });
+                  export default connect(mapStateToProps, null)(HelloConnected);
+                </code></pre>
+              </section>
+            </section>
+            <section>
+              <section>
+                <h1>Routes</h1>
+              </section>
+              <section>
+                <p>Basically, routes on React are all about displaying the right component depending on the URL.</p>
+                <p>It can be as simple as:</p>
+                <pre><code data-trim data-noescape="">
+                  if (window.location.pathname === '/about') {
+                    return &lt;About /&gt;
+                  } else {
+                    return &lt;App /&gt;>
+                  }
+                </code></pre>
+              </section>
+              <section>
+                <p>But to add a condtion to every URL that we want to mange would be extremely boring</p>
+                <p>That's why there are a lot of libraries to handle routing on React</p>
+                <p>The most widely used is React Router</p>
+                <a href="https://reacttraining.com/react-router/">
+                  https://reacttraining.com/react-router/
+                </a>
+              </section>
+              <section>
+                <p>Its philosophy is to achieve dynamic routing rather than using static routes. 
+                  Let's take a look at the differences between then.</p>
+                  <p>In Express, you would declare your routes like:</p>
+                  <pre><code data-trim data-noescape="">
+                    app.get('/users');
+                    app.get('/users/:id');
+                    app.get('users/:id/edit');
+                    
+                    app.listen();
+                  </code></pre>
+                  <p>Note how the routes are declared before the app listens.</p>
+                </section>
+                
+                <section>
+                  <p>The client side routers we’ve used are similar. In Angular you declare your 
+                    routes up front and then import them to the top-level AppModule before rendering:</p>
+                    <pre><code data-trim data-noescape="">
+                      const appRoutes: Routes = [
+                      { path: 'users',
+                      component: UsersListComponent
+                    },
+                    { path: 'user/:id',
+                    component: UserDetailComponent
+                  }
+                  ];							  
+                  @NgModule({
+                    imports: [
+                    RouterModule.forRoot(appRoutes)
+                    ]
+                  })							  
+                  export class AppModule { }
+                </code></pre>
+              </section>
+              <section>
+                <p>In dynamic routing, routing that takes place as your app is rendering, 
+                  not in a configuration or convention outside of a running app. That means 
+                  almost everything is a component in React Router.</p>
+                </section>
+                <section>
+                  <pre><code data-trim data-noescape style="max-height: initial;">
+                    import { BrowserRouter, Route, Link } from 'react-router-dom';
+                    
+                    ReactDOM.render((
+                    &lt;BrowserRouter&gt;
+                    &lt;App/&gt;
+                    &lt;/BrowserRouter&gt;
+                    ), el);
+                    
+                    const  App = () =&gt; (
+                    &lt;div&gt;
+                    &lt;nav&gt;
+                    &lt;Link to=&quot;/dashboard&quot;&gt;Dashboard&lt;/Link&gt;
+                    &lt;/nav&gt;
+                    &lt;div&gt;
+                    &lt;Route path=&quot;/dashboard&quot; component={Dashboard}/&gt;
+                    &lt;/div&gt;
+                    &lt;/div&gt;
+                    )
+                  </code></pre>
+                  <p>The Route will render &lt;Dashboard {...props}/&gt; where props are some router 
+                    specific things that look like { match, location, history }. If the user is not 
+                    at /dashboard then the Route will render null.</p>
+                  </section>
+                </section>
+                <section> 
+                  <section>
+                    <h2>Basic components</h2>
+                  </section>
+                  <section>
+                    <h3>Routers</h3>
+                    <p>At the core of every React Router application should be a router component. </p>
+                    <pre><code data-trim data-noescape style="max-height: initial;">
+                      import { BrowserRouter as Router } from 'react-router-dom'
+                      ReactDOM.render((
+                      &lt;Router&gt;
+                      &lt;App/&gt;
+                      &lt;/Router&gt;
+                      ), holder)
+                    </code></pre>
+                    <p>Tip: a &lt;Router&gt; can only have one child.</p>
+                  </section>
+                  <section>
+                    <h3>Route Matching</h3>
+                    <p>Route matching is done by comparing a &lt;Route&gt;'s path prop to the current location’s pathname. 
+                      When a &lt;Route&gt; matches it will render its content and when it does not match, it will render null. 
+                      A &lt;Route&gt; with no path will always match.</p>
+                      <p>You can include a &lt;Route&gt; anywhere that you want to render content based on the location</p>
+                    </section>
+                    <section>
+                      <h3>Route Rendering Methods</h3>
+                      <p>You have three prop choices for how you render a component for a given &lt;Router&gt;</p>
+                      <ul>
+                        <li>component: should be used when you have an existing component (either a React.Component or a stateless functional component) that you want to render.</li>
+                        <li>render: takes an inline function, should only be used when you have to pass in-scope variables to the component you want to render. </li>
+                        <li>children: works exactly like render except that it gets called whether there is a match or not.</li>
+                      </ul>
+                    </section>
+                    <section>
+                      <h3>Navigation</h3>
+                      <p>&lt;Link&gt;</p>
+                      <pre><code data-trim data-noescape>
+                        &lt;Link to='/'&gt;Home&lt;/Link&gt;
+                        // &lt;a href='/'&gt;Home&lt;/a&gt;
+                      </code></pre>
+                      
+                      <p>&lt;NavLink&gt;</p>
+                      <pre><code data-trim data-noescape>
+                        &lt;NavLink to=&#x27;&#x2F;react&#x27; activeClassName=&#x27;hurray&#x27;&gt;React&lt;&#x2F;NavLink&gt;
+                        &#x2F;&#x2F; &lt;a href=&#x27;&#x2F;react&#x27; className=&#x27;hurray&#x27;&gt;React&lt;&#x2F;a&gt;
+                      </code></pre>
+                      
+                      <p>&lt;Redirect&gt;</p>
+                      <pre><code data-trim data-noescape>
+                        &lt;Redirect to='/login'/&gt;
+                      </code></pre>
+                    </section>
+                    <section>
+                      <h3>Route Props</h3>
+                      <ul>
+                        <li>match</li>
+                        <li>location</li>
+                        <li>history</li>
+                      </ul>
+                      <aside class="notes">
+                        <ul>
+                          <li>A match object contains information about how a Route path matched the URL.</li>
+                          <li>Locations represent where the app is now, where you want it to go, or even where it was.</li>
+                          <li>Refers to the history package, which is one of only 2 major dependencies of React. provides several different implementations for managing session history in JavaScript in various environments.</li>
+                        </ul>                            
+                        
+                        
+                      </aside>
+                      
+                      
+                    </section>
+                    
+                    
+                  </section>
+                  <section>
+                    <section>
+                      <h2>Let's Code!</h2>
+                    </section>
+                    <section>
+                      <p>First, install the react-router package we need:</p>
+                      <pre><code data-trim data-noescape>
+                        npm install react-router-dom --save
+                      </code></pre>
+                      <p>Then let's get our file with the data we will use:</p>
+                      <a href="https://drive.google.com/file/d/1PiRjj6q8EnX-G9fQj3U7ZwtVIel0J3ce/view?usp=sharing" target="_new">https://drive.google.com/file/d/1PiRjj6q8EnX-G9fQj3U7ZwtVIel0J3ce/view?usp=sharing</a>
+                      <p>Save it to a folder <code>data/</code> inside <code>src/</code>.</p>
+                    </section>
+                    <section>
+                      <p>Import and use React Router</p>
+                      <pre><code data-trim data-noescape>
+                        // App.js
+                        import {
+                          BrowserRouter as Router,
+                          Route,
+                          Link
+                        } from 'react-router-dom';
+
+                        render() {
+                          return(
+                            &lt;Router&gt;
+                            ...
+                            &lt;/Router&gt;
+                          )
+                        }
+                      </code></pre>
+                    </section>
+                    <section>
+                      <p>Let's create routes</p>
+                      <pre><code data-trim data-noescape>
+                        // App.js
+                        &lt;/header&gt;
+                        &lt;section className=&quot;left&quot;&gt;
+                          &lt;div&gt;
+                            &lt;Link to=&quot;/styles&quot;&gt;Show Beer Styles&lt;/Link&gt;
+                            &lt;Route path=&quot;/styles&quot; component={ListStyles}/&gt;
+                          &lt;/div&gt;
+                        &lt;/section&gt;
+                        &lt;section className=&quot;right&quot;&gt;
+                            &lt;Route path=&quot;/styles/:id&quot; component={StyleDetail}/&gt;
+                        &lt;/section&gt;
+                        &lt;/div&gt;
+                      </code></pre>
+                    </section>
+                    <section>
+                      <p>Let's create the components we referenced in routes</p>
+                      <pre><code data-trim data-noescape style="max-height: initial;">
+                        //components/beer/styleDetail.js
+                        import React from 'react';
+                        import data from '../../data/styles';
+                        
+                        const Style = ({match}) =&gt; {
+                          const style = data.find(style =&gt; style.id == match.params.id);
+                          return (
+                            &lt;div&gt;
+                              &lt;p&gt;Name: {style.name}&lt;/p&gt;
+                              &lt;p&gt;Description: {style.description}&lt;/p&gt;
+                              &lt;p&gt;IBU: min. {style.ibuMin} - max. {style.ibuMax}&lt;/p&gt;
+                              &lt;p&gt;ABV: min. {style.abvMin} - max. {style.abvMax}&lt;/p&gt;
+                            &lt;/div&gt;
+                          )
+                        }
+                        
+                        export default Style;
+                      </code></pre>
+                    </section>
+                    <section>
+                      <pre><code data-trim data-noescape style="max-height: initial;">
+                        //components/beer/styleList.js
+                        import React from 'react';
+
+                        import data from '../../data/styles';
+                        import { Link } from 'react-router-dom';
+
+                        const List = ({ match }) =&gt; (
+                            &lt;div&gt;
+                                &lt;ul&gt;
+                                { 
+                                    data.map( style =&gt; (
+                                    &lt;li key={style.id}&gt;
+                                        &lt;Link to={`${match.url}/${style.id}`}&gt;
+                                        {style.name}
+                                        &lt;/Link&gt;
+                                    &lt;/li&gt;
+                                    ))
+                                }
+                                &lt;/ul&gt;
+                            &lt;/div&gt;
+                        );
+
+                        export default List;
+                      </code></pre>
+                    </section>
+                    <section>
+                      <p>Import your newly created components on App.js and give it a try.</p>
+                    </section>
+                    <section>
+                      <p>Did it work?</p>
+                      <p class="fragment">QUESTIONS?</p>
+                    </section>
+                  </section>
+                </section>
+                <section>
+                  <section>
+                    <h1>Networking</h1>
+                  </section>
+                  <section>
+                    <p>As we know, React it's nothing more than a Javascript library. Fetching a resource through a network
+                        is done the same way any Javascript client would do.
+                    </p>
+                  </section>
+                  <section>
+                    <p>Options:</p>
+                    <ul>
+                      <li>XMLHttpRequest</li>
+                      <li>jQuery.ajax</li>
+                      <li>Fetch API</li>
+                      <li>Axios</li>
+                      <li>...etc</li>
+                    </ul>
+                  </section>
+                  <section>
+                    <p>There are advantages and disadvantages between all the options, but some are much more
+                      noticeable. For that reason, we will use Axios on our example.
+                    </p>
+                  </section>
+                  <section>
+                    <p>The trick part about fetching a resource on the network with React is to decide where in the 
+                      component lifecycle you will place you AJAX request.
+                    </p>
+                  </section>
+                  <section>
+                    <p><a href="https://reactjs.org/docs/faq-ajax.html#how-can-i-make-an-ajax-call">React documentation</a> tells
+                    us to make AJAX inside the <code>componentDidMount</code> method so we can use <code>setState</code> to update
+                    our component when the data is retrieved. That way, we have more control over the states of our component.</p>
+                  </section>
+                </section>
+                <section>
+                  <section>
+                    <h2>Let's code!</h2>
+                  </section>
+                  <section>
+                    <p>We will use the Star Wars API, which is a free API for testing and learning purposes.</p>
+                    <p><a href="https://swapi.co/">https://swapi.co/</a></p>
+                  </section>
+                  <section>
+                    <p>Let's first create a new component:</p>
+                    <pre><code data-trim data-noescape style="max-height: initial;">
+                      // components/starwars/films.js
+                      import React, { Component } from 'react';
+                      class Films extends Component {
+                        constructor(props) {
+                          super(props);
+                        }
+                        render() {
+                          return &lt;div&gt;Hi!&lt;&#x2F;div&gt;
+                        }
+                      }
+                      export default Films; 
+                    </code></pre>
+                  </section>
+                  <section>
+                    <p>Now let's install the Axios package:</p>
+                    <pre><code data-trim data-noescape style="max-height: initial;">
+                        npm i --save axios
+                    </code></pre>
+                    <p>And import Axios and define an initial state for our component:</p>
+                    <pre><code data-trim data-noescape style="max-height: initial;">
+                      // components/starwars/films.js
+                      import axios from 'axios';
+
+                      constructor(props) {
+                        super(props);
+                        this.state = {
+                            loading: false,
+                            error: false,
+                            list: []
+                        }
+                      }
+                    </code></pre>
+                  </section>
+                  <section>
+                    <p>Define a function that will fetch our data:</p>
+                    <pre><code data-trim data-noescape style="max-height: initial;">
+                      fetchFilms = () => {
+                        this.setState({ loading: true, error: false }, () => {
+                            axios.get('https://swapi.co/api/films/')
+                                .then((response) => {
+                                    const list = response.data.results;
+                                    this.setState({
+                                        loading: false,
+                                        error: false,
+                                        list
+                                    });
+                                })
+                                .catch(() => {
+                                    this.setState({
+                                        loading: false,
+                                        error: true,
+                                    });
+                                });
+                        });
+                      }
+                    </code></pre>
+                  </section>
+                  <section>
+                    <p>Like we learn before, the place to fetch our data is inside <code>componentDidMount</code>:</p>
+                    <pre><code data-trim data-noescape style="max-height: initial;">
+                      componentDidMount() {
+                        this.fetchFilms();
+                      }
+                    </code></pre>
+                  </section>
+                  <section>
+                    <p>Define the <code>render</code> method:</p>
+                    <pre><code data-trim data-noescape style="max-height: initial;">
+                      render() {
+                        const { loading, error, list } = this.state;
+                        if (loading) { return  &lt;div&gt;Loading...&lt;/div&gt;; }
+                        if (error) { return &lt;div&gt;Error!&lt;&#x2F;div&gt;; }
+                        return (
+                          &lt;div&gt;
+                            &lt;ul&gt; {
+                              list.map( film => (
+                                  &lt;li key={film.episode_id}&gt;{film.title}&lt;&#x2F;li&gt;
+                              ))
+                            }
+                            &lt;/ul&gt;
+                          &lt;/div&gt;
+                        );
+                      }
+                    </code></pre>
+                  </section>
+                  <section>
+                    <p>Change our <code>App.js</code> to render our new component:</p>
+                    <pre><code data-trim data-noescape style="max-height: initial;">
+                      // App.js
+                      import Films from './components/starwars/films';
+
+                      &lt;Link to=&#x27;&#x2F;films&#x27;&gt;Films&lt;&#x2F;Link&gt;
+
+                      &lt;Route path=&quot;&#x2F;films&quot; component={Films}&#x2F;&gt;
+                    </code></pre>
+                    
+                  </section>
+                  <section>
+                    <p>Did it work?</p>
+                  </section>
+                </section>
+                <section>
+                  <h1>Challenge</h1>
+                  <p>Transform the Films component to store the films list inside Redux.</p>
+                </section>
+              </div>
+            </div>
+            
+            <script src="lib/js/head.min.js"></script>
+            <script src="js/reveal.js"></script>
+            
+            <script>
+              function setSubject(value) {
+                if (value) {
+                  document.getElementById('subject').innerText = value;
+                } else {
+                  document.getElementById('subject').innerText = '';
+                }
+              }
+              // More info about config & dependencies:
+              // - https://github.com/hakimel/reveal.js#configuration
+              // - https://github.com/hakimel/reveal.js#dependencies
+              Reveal.initialize({
+                history: true,
+                dependencies: [
+                { src: 'plugin/markdown/marked.js' },
+                { src: 'plugin/markdown/markdown.js' },
+                { src: 'plugin/notes/notes.js', async: true },
+                { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+                ]
+              });
+              Reveal.configure({ slideNumber: 'c/t' });
+              Reveal.addEventListener( 'slidechanged', function( event ) {
+                var slide = event.currentSlide;
+                setSubject(slide.dataset.subject || slide.parentNode.dataset.subject);
+              } );
+              Reveal.addEventListener( 'ready', function( event ) {
+                var slide = event.currentSlide;
+                setSubject(slide.dataset.subject || slide.parentNode.dataset.subject);
+              } );
+            </script>
+          </body>
+          </html>
+          
